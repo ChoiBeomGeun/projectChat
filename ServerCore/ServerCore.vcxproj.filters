@@ -33,6 +33,9 @@
     <ClInclude Include="SendBuffer.h">
       <Filter>Main\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -49,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="SendBuffer.cpp">
       <Filter>Main\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

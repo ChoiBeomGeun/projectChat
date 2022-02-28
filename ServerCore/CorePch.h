@@ -1,11 +1,12 @@
 #pragma once
 
-#include "CoreGlobal.h"
 #include "Container.h"
 #include "PacketHeader.h"
+#include "Utility.h"
 
 #include <windows.h>
 #include <iostream>
+#include <assert.h> 
 using namespace std;
 
 #include <winsock2.h>

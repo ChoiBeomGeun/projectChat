@@ -1,3 +1,12 @@
+
+# output
+.Binary/
+
+# visual studio
+.vs/
+.bin/
+.obj/
+
 # Prerequisites
 *.d
 

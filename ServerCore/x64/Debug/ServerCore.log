@@ -1,8 +1,7 @@
 ﻿  pch.cpp
-  BufferReader.cpp
-  BufferWriter.cpp
+  The contents of <format> are available only in c++latest mode with concepts support;
+  see https://github.com/microsoft/STL/issues/1814 for details.
   CorePch.cpp
-  SendBuffer.cpp
   Utility.cpp
   코드를 생성하고 있습니다...
-  ServerCore.vcxproj -> C:\Users\o7716\OneDrive\Desktop\gitchat\projectChat\Libraries\Debug\ServerCore.lib
+  ServerCore.vcxproj -> C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Libraries\Debug\Lib\ServerCore.lib

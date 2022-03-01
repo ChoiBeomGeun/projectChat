@@ -1,20 +1,31 @@
 #include "MainServer.h"
 
+#include "ClientManager.h"
+#include "ServerPacketHandler.h"
 #include "Session.h"
 #include "SessionManager.h"
 
-
+#include "StringTable.h"
 const int BUFSIZE = 4096;
 
 
+void ProcessInput(Session  session);
+
 MainServer::MainServer()
 {
+	
+	
+
+
 }
 
 MainServer::~MainServer()
 {
 
 }
+
+
+
 //=================================================================================================
 // @brief 서버 초기화
 //=================================================================================================
@@ -31,7 +42,7 @@ bool MainServer::Start(int port)
 	Utility::HandleError(listenSocket == INVALID_SOCKET,
 		"Invalid Socket!");
 
-	_listenerSocket = listenSocket;
+	ListenerSocket = listenSocket;
 
 	u_long on = 1;
 
@@ -50,7 +61,9 @@ bool MainServer::Start(int port)
 
 	Utility::HandleError((::listen(listenSocket, SOMAXCONN) == SOCKET_ERROR),
 		"Listen Failed !");
-	
+
+
+	cout << "Server is Initialized!\n" << "Open Port : " << port;
 	return true;
 }
 //=================================================================================================
@@ -58,8 +71,8 @@ bool MainServer::Start(int port)
 //=================================================================================================
 void MainServer::Update()
 {
-	vector<Session> sessions;
-	sessions.reserve(100);
+
+	ServerPacketHandler packetHandler;
 	while (true)
 	{
 		fd_set reads;
@@ -68,26 +81,25 @@ void MainServer::Update()
 		FD_ZERO(&reads);
 		FD_ZERO(&writes);
 
-		FD_SET(_listenerSocket, &reads);
+		FD_SET(ListenerSocket, &reads);
 
-		for (Session& s : sessions)
+		for (std::pair<string, Session*> element : GSessionManager.SessionMap)
 		{
-			if (s.recvBytes <= s.sendBytes)
-				FD_SET(s.socket, &reads);
-			else
-				FD_SET(s.socket, &writes);
+			Session* s = element.second;
+	
+			FD_SET(s->Socket, &reads);
 		}
 
 		Utility::HandleError((int)(::select(0, &reads, &writes, nullptr, nullptr) == SOCKET_ERROR),
 			"Select Socket Failed !");
-
+	
 		// Listener 
-		if (FD_ISSET(_listenerSocket, &reads))
+		if (FD_ISSET(ListenerSocket, &reads))
 		{
 
 			SOCKADDR_IN clientAddr;
 			int addrLen = sizeof(clientAddr);
-			SOCKET clientSocket = ::accept(_listenerSocket, (SOCKADDR*)&clientAddr, &addrLen);
+			SOCKET clientSocket = ::accept(ListenerSocket, (SOCKADDR*)&clientAddr, &addrLen);
 
 			char buf[32];
 			auto ip = inet_ntop(AF_INET, &clientAddr, buf, sizeof(buf));
@@ -95,14 +107,12 @@ void MainServer::Update()
 			if (clientSocket != INVALID_SOCKET)
 			{
 				cout << "Client Connected" << endl;
-				sessions.push_back(Session{ clientSocket });
 
-				GSessionManager.RegisterSession(new Session{ clientSocket }, string(ip));
+				string key = string(ip);
+			
+				GSessionManager.RegisterSession( clientSocket, key );
+				GSessionManager.SendSingleMessage(StringTable::LoginDescription, key);
 
-				GSessionManager.SendSingleMessage("닉네임을 입력하시오",string(ip));
-				/*wchar_t str[100] = L"안냐세여";
-				char* pStr = Utility::wcharTochar(str);
-				::send(clientSocket, pStr, sizeof(pStr), 0);*/
 			}
 		}
 
@@ -110,9 +120,9 @@ void MainServer::Update()
 		for (std::pair<string, Session*> element : GSessionManager.SessionMap)
 		{
 			Session * s = element.second;
-			if (FD_ISSET(s->socket, &reads))
+			if (FD_ISSET(s->Socket, &reads))
 			{
-				int recvLen = ::recv(s->socket, s->recvBuffer + s->recvBytes, BUFSIZE - s->recvBytes, 0);
+				int recvLen = ::recv(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
 
 				if (recvLen <= 0)
 				{
@@ -120,45 +130,30 @@ void MainServer::Update()
 					continue;
 				}
 
-				s->recvBytes += recvLen;
+				s->RecvBytes += recvLen;
 
-				if (s->recvBuffer[s->recvBytes - 1] == '\n')
+				if (s->RecvBuffer[s->RecvBytes - 1] == '\n')
 				{
-					cout << "NameSet : " << recvLen << endl;
+					packetHandler.ProcessInput(*s);
 
-					string name (s->recvBuffer);
-					name.replace(name.find("\r\n"),2,"");
-					GSessionManager.BroadcastMessage(name.c_str());
-					s->Reset();
+				/*	FD_SET(s->Socket, &writes);*/
 				}
 
-				cout << "recv Lng : " << s->recvBytes << endl;
 			}
-			//TODO : 인풋처리 추가
+
 			// Write
-			if (FD_ISSET(s->socket, &writes))
+			else if (FD_ISSET(s->Socket, &writes))
 			{
+			
 
-				//int sendLen = ::send(s.socket, &s.recvBuffer[s.sendBytes], s.recvBytes - s.sendBytes, 0);
-				//if (sendLen == SOCKET_ERROR)
-				//{		
-				//	// TODO : sessions 제거
-				//	continue;
-				//}
-
-				//s.sendBytes += sendLen;
-				//if (s.recvBytes == s.sendBytes)
-				//{
-				//	s.recvBytes = 0;
-				//	s.sendBytes = 0;
-				//}
-
-				//cout << "send Lng : " << sendLen << endl;
-				//s.Reset();
 			}
 		}
 
 
 		}
-	}
+}
+
+
+
+
 

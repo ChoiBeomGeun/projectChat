@@ -8,18 +8,21 @@
 class SessionManager
 {
 	friend class MainServer;
+	friend class ClientManager;
 public:
-	void RegisterSession(Session* session,string name);
-	void RemoveSessionMap(string nameKey);
-	void BroadcastMessage(const char * msg);
-	void SendSingleMessage(const char* msg,string nameKey);
-	Session* GetSectionWithKey(string nameKey);
-private:
-	bool CheckSessionExist(string key);
+	void RegisterSession(SOCKET socket, string key);
+	void RemoveSessionMap(string ipKey);
+	void BroadcastMessage(const string& msg);
+	void SendSingleMessage(const string& msg,string ipKey);
 
+	Session* GetSectionWithKey(string ipKey);
+private:
+	bool CheckSessionExist(string ipKey);
+	void SendSingleMessageWithSession(const string & msg, Session * session);
 
 	//session hashmap for searching
 	unordered_map<string,Session*> SessionMap;
 };
+
 
 extern SessionManager GSessionManager;

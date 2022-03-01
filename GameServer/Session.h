@@ -3,24 +3,28 @@
 
 struct Session
 {
+	enum State
+	{
+	   Lobby, Room
+	};
+
 	enum
 	{
 		BUFSIZE = 1000
 	};
 
-	enum State
-	{
-		PreLogin, Login, Lobby
-	};
 
-	SOCKET socket = INVALID_SOCKET;
-	char recvBuffer[BUFSIZE] = "";
-	int recvBytes = 0;
-	int sendBytes = 0;
+
+	SOCKET Socket = INVALID_SOCKET;
+	string Key = "";
+	char RecvBuffer[BUFSIZE] = "";
+	int RecvBytes = 0;
+	int SendBytes = 0;
+	bool IsSending = false;
 
 	void Reset()
 	{
-		recvBytes = 0;
-		ZeroMemory(recvBuffer, BUFSIZE + 1);
+		RecvBytes = 0;
+		ZeroMemory(RecvBuffer, BUFSIZE);
 	}
 };

@@ -1,6 +1,6 @@
 #pragma once
-#include "pch.h"
 
+#include "pch.h"
 class MainServer
 {
 public:
@@ -10,6 +10,7 @@ public:
 	bool Start(int port);
 	void Update();
 
-	SOCKET _listenerSocket;
+	SOCKET ListenerSocket;
+
 };
 

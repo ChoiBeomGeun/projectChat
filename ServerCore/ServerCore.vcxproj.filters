@@ -7,9 +7,6 @@
     <Filter Include="Util">
       <UniqueIdentifier>{e01a8b23-9f4b-42cc-a940-a7bde2559599}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Buffer">
-      <UniqueIdentifier>{f5f17703-3565-423d-a104-142d2effe50d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Container.h">
@@ -21,18 +18,6 @@
     <ClInclude Include="CorePch.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="BufferReader.h">
-      <Filter>Main\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketHeader.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="BufferWriter.h">
-      <Filter>Main\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="SendBuffer.h">
-      <Filter>Main\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -43,15 +28,6 @@
     </ClCompile>
     <ClCompile Include="CorePch.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="BufferReader.cpp">
-      <Filter>Main\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="BufferWriter.cpp">
-      <Filter>Main\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="SendBuffer.cpp">
-      <Filter>Main\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
       <Filter>Util</Filter>

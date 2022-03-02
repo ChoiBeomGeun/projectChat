@@ -47,15 +47,6 @@ void ClientManager::RemoveClient(const string & ipKey)
     delete(client);
 }
 
-//=================================================================================================
-// @brief 단일 메시지 전송 함수
-//=================================================================================================
-void ClientManager::SendSingleMessage(const string & msg, const string & nameKey)
-{
-    Client* client = GetClientWithNameKey(nameKey);
-
-    GSessionManager.SendSingleMessageWithSession(msg, client->GetSession());
-}
 
 void ClientManager::ShowClientList(const Session * session)
 {

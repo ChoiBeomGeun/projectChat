@@ -20,7 +20,6 @@ public:
 	char RecvBuffer[BUFSIZE] = "";
 	int RecvBytes = 0;
 	int SendBytes = 0;
-	bool IsSending = false;
 
 	void Reset()
 	{

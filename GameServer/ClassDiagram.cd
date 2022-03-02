@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ServerPacketHandler" Collapsed="true">
+    <Position X="4.75" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAACIAgAgAAASACBYAAEIAAEAAiAAACASAACAAAIAA=</HashCode>
+      <FileName>ServerPacketHandler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainServer" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQABAACAAACAAAAAAAAAAAAAQAAAAAEABAAAAAAA=</HashCode>
+      <FileName>MainServer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClientManager" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IGAEAAAAEAAAAABAAAAAAAAgAQAAAAAABBAACAAAAAA=</HashCode>
+      <FileName>ClientManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomManager" Collapsed="true">
+    <Position X="4.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAYEAAAIAAAABCAAHAAAAAACAAAAAU=</HashCode>
+      <FileName>RoomManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SessionManager" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAIACAAAAAAAAAAAAAgIAgAQEAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>SessionManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client">
+    <Position X="0.5" Y="1.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAAQAAAAAAAAQACAAAAQAAAAAAAAAABAQ=</HashCode>
+      <FileName>Client.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Room">
+    <Position X="3" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAASAAIAAAAAAABBAAAEAAAAAAEAABAACgBAAEAA=</HashCode>
+      <FileName>Room.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Session">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <Members>
+      <Field Name="SendBytes" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Session::State" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Session.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Session::__unnamed_enum_0010_1" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Session.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAAEAAAAAAAAAA4AAAAAAAAAAAAA=</HashCode>
+      <FileName>Session.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

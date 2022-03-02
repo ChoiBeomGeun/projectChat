@@ -8,7 +8,6 @@ public:
 	~ClientManager();
 	void RegisterClient(Session* session, const string & nameKey);
 	void RemoveClient(const string & ipKey);
-	void SendSingleMessage(const string& msg ,const string & nameKey);
 	void ShowClientList(const Session * session);
 
 	Client* GetClientWithNameKey(const string & nameKey);

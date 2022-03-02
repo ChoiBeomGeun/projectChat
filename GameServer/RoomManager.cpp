@@ -84,15 +84,15 @@ void RoomManager::DestroyRoom(int roomNumber,Session * session)
     }
 
     Room* room = GetRoomWithNumber(roomNumber);
-    vector<Client> clientList = room->GetClients();
+    vector<Client*> clientList = room->GetClients();
 
     //Notify clients before deleting room
     string notifyMessage = format(StringTable::AlarmDestroyRoom, room->GetRoomName());
     BroadCastToRoom(room, notifyMessage);
 
-    for (Client client : clientList)
+    for (Client * client : clientList)
     {
-        client.SetRoomState(-1);
+        client->SetRoomState(-1);
     }
 
     RoomList.erase(RoomList.begin()+ roomNumber);
@@ -153,15 +153,15 @@ void RoomManager::ShowRoomList(Session * session)
 void RoomManager::ShowRoomUserList(Session * session,int roomNumber)
 {
     Room* room = GetRoomWithNumber(roomNumber);
-    vector<Client> clients = room->GetClients();
+    vector<Client*> clients = room->GetClients();
     std::stringstream ss;
     ss << StringTable::AlarmRoomUserList;
     string userCount = std::format("({}/{})", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount()));
     string roomDes = std::format(StringTable::TemplateRoomList, roomNumber, room->GetRoomName(), room->GetOwner().GetName(), userCount);
     ss << room;
-    for(Client client : clients)
+    for(Client * client : clients)
     {
-        string userInfo = std::format(StringTable::TemplateClientInfo, client.GetName(), client.GetSession()->Key);
+        string userInfo = std::format(StringTable::TemplateClientInfo, client->GetName(), client->GetSession()->Key);
         ss << userInfo;
     }
 
@@ -174,9 +174,9 @@ void RoomManager::ShowRoomUserList(Session * session,int roomNumber)
 //=================================================================================================
 void RoomManager::BroadCastToRoom(Room* room, string& msg)
 {
-    for(Client client : room->GetClients())
+    for(Client * client : room->GetClients())
     {
-        GSessionManager.SendSingleMessage(msg, client.GetSession()->Key);
+        GSessionManager.SendSingleMessage(msg, client->GetSession()->Key);
     }
 }
 //=================================================================================================

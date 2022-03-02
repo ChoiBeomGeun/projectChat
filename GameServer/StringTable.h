@@ -11,7 +11,7 @@ namespace StringTable
 	  const string InvalidDestroyRoom = "인풋값을 확인핫세요!\r\n";
 	  const string InvalidWhisper = "인풋값을 확인핫세요!\r\n";
 
-	  const string LoginDescription = "로그인을 하세요! \r\n 명령어 LOGIN {닉네임} \r\n";
+	  const string LoginDescription = "로그인을 하세요! \r\n 명령어 /Login,/l {닉네임} \r\n";
 	  const string CommandDescription =
 "------------------------명령어 리스트------------------------\r\n  \
 로그인				/Login, /l				{닉네임}		    \r\n	\
@@ -32,7 +32,7 @@ namespace StringTable
 	 const string AlarmDestroyRoom = "{0} 방이 파괴되었습니다! \r\n";
 	 const string AlarmFullRoom = "방의 인원수가 가득찼습니다! \r\n";
 	 const string AlarmRoomUserList = "해당 방의 대한 정보 입니다. \r\n";
-	 const string AlarmSendWhispher = "귓속말이 전송되었습니다.";
+	 const string AlarmSendWhispher = "귓속말이 전송되었습니다.\r\n";
 	 const string TemplateRoomList = "방 번호 : {} 방 이름 : {}, 방 주인 : {}, 인원 수 : {}\r\n";
 	 const string TemplateClientInfo = "유저 닉네임 : {} 유저 주소 : {} \r\n";
 	 const string TemplateWhispher = "{}님의 귓속말 : ";

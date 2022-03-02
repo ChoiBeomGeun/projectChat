@@ -10,7 +10,7 @@ public:
 	void AddClient(Client* client);
 	void RemoveClient(Client* client);
 
-	vector<Client>  GetClients();
+	vector<Client*> GetClients();
 	int GetMaxRoomCount();
 	int GetCurUserCount();
 	string GetRoomName();
@@ -21,6 +21,6 @@ private:
 	string RoomName;
 	int MaxRoomCount;
 
-	vector<Client>*  RoomClients;
+	vector<Client*> RoomClients;
 };
 

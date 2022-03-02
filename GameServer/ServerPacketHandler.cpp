@@ -69,10 +69,6 @@ void ServerPacketHandler::ProcessInput(Session & session)
 		}
 	}
 	
-
-	// Delete Newline characters
-	
-	
 	vector<string> args = Utility::SplitString(const_cast<char*>(input.c_str()), " ");
 
 	//check args is empty

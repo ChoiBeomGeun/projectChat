@@ -52,6 +52,7 @@ void ServerPacketHandler::ProcessInput(Session & session)
 	if (GClientManager.CheckClientExistWithIpKey(session.Key) == true)
 	{
 		Client* client = GClientManager.GetClientWithIpKey(session.Key);
+		//check user is in chat room
 		int enteredRoomNumber = client->GetEntertedRoomNumber();
 		if(enteredRoomNumber != -1)
 		{

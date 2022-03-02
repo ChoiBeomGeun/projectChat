@@ -23,6 +23,7 @@ vector<string> Utility::SplitString(char * target,const char * delimiter)
 //=================================================================================================
 void Utility::HandleError(bool isError, std::string msg, bool isAssert)
 {
+	cout << "";
 	if(isError)
 	{
 		cout << "Error ! Msg :" << msg << endl;

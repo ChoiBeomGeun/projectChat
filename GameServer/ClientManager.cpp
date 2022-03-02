@@ -2,6 +2,8 @@
 
 #include "SessionManager.h"
 #include "StringTable.h"
+#include "Client.h"
+#include "Session.h"
 //=================================================================================================
 // @brief 클라이언트 등록
 //=================================================================================================
@@ -18,10 +20,9 @@ void ClientManager::RegisterClient(Session* session, string nameKey)
 void ClientManager::RemoveClient(string ipKey)
 {
     Client* client = GetClientWithIpKey(ipKey);
-    delete(client);
     ClientIpMap.erase(ipKey);
     ClientMap.erase(client->GetName());
-
+    delete(client);
 }
 
 void ClientManager::BroadcastMessage(string& msg)

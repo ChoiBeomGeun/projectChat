@@ -1,7 +1,7 @@
 #pragma once
-#include "Client.h"
-#include "Session.h"
-
+#include "pch.h"
+class Session;
+class Client;
 class ClientManager
 {
 	friend class MainServer;

@@ -4,9 +4,9 @@ Client::Client(string name, ::Session* session) : Name(name) , Session(session)
 {
 }
 
-void Client::SetRoomState(int roomnumber)
+void Client::SetRoomState(int roomNumber)
 {
-	EntertedRoomNumber = roomnumber;
+	EntertedRoomNumber = roomNumber;
 }
 
 Session* Client::GetSession()

@@ -1,6 +1,6 @@
 #include "Room.h"
-
-Room::Room(Client owner, string roomName, int maxRoomCount) : Owner(owner), RoomName(roomName) , MaxRoomCount(maxRoomCount)
+#include "Client.h"
+Room::Room(Client * owner, string roomName, int maxRoomCount) : Owner(owner), RoomName(roomName) , MaxRoomCount(maxRoomCount)
 {
 	
 }
@@ -45,5 +45,5 @@ string Room::GetRoomName()
 
 Client Room::GetOwner()
 {
-	return Owner;
+	return *Owner;
 }

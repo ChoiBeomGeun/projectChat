@@ -1,8 +1,8 @@
 #pragma once
-#include "MainServer.h"
-
-struct Session
+#include "pch.h"
+class Session
 {
+public:
 	enum State
 	{
 	   Lobby, Room

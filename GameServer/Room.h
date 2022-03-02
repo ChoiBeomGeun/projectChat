@@ -1,10 +1,12 @@
 #pragma once
-#include "Client.h"
+#include "pch.h"
 
+class Client;
 class Room
 {
+
 public:
-	Room(Client owner,string roomName, int maxRoomCount);
+	Room(Client * owner,string roomName, int maxRoomCount);
 	~Room();
 
 	void AddClient(Client* client);
@@ -17,7 +19,7 @@ public:
 	Client GetOwner();
 
 private:
-	Client Owner;
+	Client * Owner;
 	string RoomName;
 	int MaxRoomCount;
 

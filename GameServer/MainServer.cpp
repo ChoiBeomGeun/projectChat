@@ -117,9 +117,10 @@ void MainServer::Update()
 		}
 
 
-		for (std::pair<string, Session*> element : GSessionManager.SessionMap)
+		for(unordered_map<string, Session*>::iterator it = GSessionManager.SessionMap.begin(); 
+			it != GSessionManager.SessionMap.end();)
 		{
-			Session * s = element.second;
+			Session* s = it->second;
 			if (FD_ISSET(s->Socket, &reads))
 			{
 				int recvLen = ::recv(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
@@ -127,9 +128,10 @@ void MainServer::Update()
 				if (recvLen <= 0)
 				{
 					// session ¹× client °´Ã¼ Á¦°Å
+
+					if (GClientManager.CheckClientExistWithIpKey(s->Key)) GClientManager.RemoveClient(s->Key);
 					GSessionManager.RemoveSessionMap(s->Key);
-					if(GClientManager.CheckClientExistWithIpKey(s->Key)) GClientManager.RemoveClient(s->Key);
-					continue;
+					break;
 				}
 
 				s->RecvBytes += recvLen;
@@ -138,7 +140,7 @@ void MainServer::Update()
 				{
 					packetHandler.ProcessInput(*s);
 
-				/*	FD_SET(s->Socket, &writes);*/
+					/*	FD_SET(s->Socket, &writes);*/
 				}
 
 			}
@@ -146,13 +148,14 @@ void MainServer::Update()
 			// Write
 			else if (FD_ISSET(s->Socket, &writes))
 			{
-			
+
 
 			}
+			++it;
 		}
 
 
-		}
+	}
 }
 
 

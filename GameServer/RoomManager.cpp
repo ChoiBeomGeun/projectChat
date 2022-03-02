@@ -1,8 +1,9 @@
 #include "RoomManager.h"
-
+#include "Client.h"
 #include "SessionManager.h"
-
+#include  "Session.h"
 #include "StringTable.h"
+#include "Room.h"
 
 #include <format>
 //=================================================================================================
@@ -10,7 +11,7 @@
 //=================================================================================================
 void RoomManager::RegisterRoom(Client * owner, string roomName, int maxRoomCount)
 {
-	Room* room = new Room(*owner,roomName,maxRoomCount);
+	Room* room = new Room(owner,roomName,maxRoomCount);
     RoomList.push_back(room);
 
     GSessionManager.SendSingleMessage(StringTable::AlarmCreatingRoom,owner->GetSession()->Key);

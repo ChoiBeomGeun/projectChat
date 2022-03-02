@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
-#include "Session.h"
 
+class Session;
 enum
 {
 	Login

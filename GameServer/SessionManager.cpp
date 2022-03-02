@@ -1,4 +1,5 @@
 #include "SessionManager.h"
+#include "Session.h"
 //=================================================================================================
 // @brief 세션 등록
 //=================================================================================================
@@ -19,7 +20,7 @@ void SessionManager::RegisterSession(SOCKET socket, string key)
 void SessionManager::RemoveSessionMap(string ipKey)
 {
     //세션이 존재하는지 체크
-    Utility::HandleError((CheckSessionExist(ipKey) == true),
+    Utility::HandleError((CheckSessionExist(ipKey) == false),
         "Not Exist Name! : " + ipKey);
 
     delete(GetSectionWithKey(ipKey));

@@ -16,7 +16,8 @@ class ServerPacketHandler
 public:
 	using HandleFunc = std::function<void(ServerPacketHandler&,const vector<string>&, Session*)>;
 	ServerPacketHandler();
-
+	
+	// if ProcessInput return false , server will be closed
 	void ProcessInput(Session & session);
 	// Handle command Functions
 private:
@@ -26,6 +27,7 @@ private:
 	void HandleEnterRoom(const vector<string> &args, const Session* session);
 	void HandleDestroyRoom(const vector<string>& args, const Session* session);
 	void HandleExitRoom(const vector<string>& args, const Session* session);
+	void HandleInviteRoom(const vector<string>& args, const Session* session);
 
 	void HandleUserList(const vector<string> &args, const Session* session);
 	void HandleRoomList(const vector<string>& args, const Session* session);
@@ -41,6 +43,7 @@ private:
 	bool ValidateDestroyRoomArgs(const vector<string>& args);
 	bool ValidateWhisperArgs(const vector<string>& args);
 	bool ValidateRoomUserListArgs(const vector<string>& args);
+	bool ValidateInviteRoomArgs(const vector<string>& args);
 private:
 	//unordered_map{command name , tuple {if true, command execute in chat room,need args count, function object}}
 	unordered_map<string, tuple<bool,int, HandleFunc>> CommandList;

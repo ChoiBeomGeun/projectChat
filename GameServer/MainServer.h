@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+class ServerPacketHandler;
 class MainServer
 {
 public:
@@ -8,9 +9,12 @@ public:
 	~MainServer();
 
 	bool Start(int port);
+	void HandleListener(fd_set& readSet) const;
+	void HandleRecv(fd_set& readSet) ;
 	void Update();
 
 	SOCKET ListenerSocket;
+	ServerPacketHandler* PacketHandler;
 
 };
 

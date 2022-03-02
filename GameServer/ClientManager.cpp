@@ -5,22 +5,38 @@
 #include "Client.h"
 #include "RoomManager.h"
 #include "Session.h"
+
+ClientManager::~ClientManager()
+{
+    for(pair<string,Client*> pair : ClientMap)
+    {
+        delete(pair.second);
+    }
+}
+
 //=================================================================================================
 // @brief 클라이언트 등록
 //=================================================================================================
-void ClientManager::RegisterClient(Session* session, string nameKey)
+void ClientManager::RegisterClient(Session* session, const string & nameKey)
 {
     Utility::HandleError((CheckClientExist(nameKey) == true),
         "Exist Name! : " + nameKey);
 
-    Client* client = new Client(nameKey, session);
+    Client * client = new Client(nameKey, session);
     ClientMap[nameKey] = client;
     ClientIpMap[session->Key] = client;
 }
 
-void ClientManager::RemoveClient(string ipKey)
+void ClientManager::RemoveClient(const string & ipKey)
 {
     Client* client = GetClientWithIpKey(ipKey);
+
+    if(client == nullptr)
+    {
+        cout << "Client is nullptr , key: " << ipKey << endl;
+        return;
+    }
+
     if(client->GetEntertedRoomNumber() != -1)
     {
         GRoomManager.ExitRoom(client);
@@ -31,14 +47,10 @@ void ClientManager::RemoveClient(string ipKey)
     delete(client);
 }
 
-void ClientManager::BroadcastMessage(string& msg)
-{
-}
-
 //=================================================================================================
 // @brief 단일 메시지 전송 함수
 //=================================================================================================
-void ClientManager::SendSingleMessage(string & msg, string nameKey)
+void ClientManager::SendSingleMessage(const string & msg, const string & nameKey)
 {
     Client* client = GetClientWithNameKey(nameKey);
 
@@ -53,7 +65,7 @@ void ClientManager::ShowClientList(const Session * session)
         return;
     }
 
-    std::stringstream ss;
+	stringstream ss;
 
     for (std::pair<string, Client*> element : ClientIpMap)
     {
@@ -65,7 +77,7 @@ void ClientManager::ShowClientList(const Session * session)
 
 }
 
-Client* ClientManager::GetClientWithNameKey(string nameKey)
+Client* ClientManager::GetClientWithNameKey(const string & nameKey)
 {
     auto result = ClientMap.find(nameKey);
 
@@ -74,7 +86,7 @@ Client* ClientManager::GetClientWithNameKey(string nameKey)
 
     return result->second;
 }
-Client* ClientManager::GetClientWithIpKey(string ipKey)
+Client* ClientManager::GetClientWithIpKey(const string & ipKey)
 {
     auto result = ClientIpMap.find(ipKey);
 
@@ -84,12 +96,29 @@ Client* ClientManager::GetClientWithIpKey(string ipKey)
     return result->second;
 }
 
-bool ClientManager::CheckClientExist(string nameKey)
+bool ClientManager::CheckClientExist(const string & nameKey)
 {
     return ClientMap.find(nameKey) != ClientMap.end();
 }
 
-bool ClientManager::CheckClientExistWithIpKey(string ipKey)
+bool ClientManager::CheckClientExistWithIpKey(const string & ipKey)
 {
     return ClientIpMap.find(ipKey) != ClientIpMap.end();
+}
+
+pair<bool, Client*> ClientManager::TryGetClientWithIpKey(const string& ipKey)
+{
+    unordered_map<string, Client*>::iterator findClient = ClientIpMap.find(ipKey);
+    pair<bool, Client*> pair;
+    if(findClient == ClientIpMap.end())
+    {
+        pair.first = false;
+    }
+    else
+    {
+        pair.first = true;
+        pair.second = (*findClient).second;
+    }
+
+    return pair;
 }

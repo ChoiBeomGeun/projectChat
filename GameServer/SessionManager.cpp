@@ -1,9 +1,19 @@
 #include "SessionManager.h"
+#include "ClientManager.h"
 #include "Session.h"
+
+SessionManager::~SessionManager()
+{
+    for (pair<string, Session*> pair : SessionMap)
+    {
+        delete(pair.second);
+    }
+}
+
 //=================================================================================================
 // @brief 세션 등록
 //=================================================================================================
-void SessionManager::RegisterSession(SOCKET socket, string key)
+void SessionManager::RegisterSession(const SOCKET & socket,const string & key)
 {
     //중복된 ip 체크
     Utility::HandleError((CheckSessionExist(key) == true),
@@ -17,31 +27,40 @@ void SessionManager::RegisterSession(SOCKET socket, string key)
 //=================================================================================================
 // @brief 세션 삭제
 //=================================================================================================
-void SessionManager::RemoveSessionMap(string ipKey)
+void SessionManager::RemoveSessionMap(const string & ipKey)
 {
     //세션이 존재하는지 체크
     Utility::HandleError((CheckSessionExist(ipKey) == false),
         "Not Exist Name! : " + ipKey);
 
-    delete(GetSectionWithKey(ipKey));
-
+    Session* session = GetSectionWithKey(ipKey);
+    //delete client Info
+    if (GClientManager.CheckClientExistWithIpKey(session->Key)) GClientManager.RemoveClient(session->Key);
     SessionMap.erase(ipKey);
+	delete(session);
 
+    shutdown(session->Socket, SD_SEND);
+    closesocket(session->Socket);
 }
 //=================================================================================================
 // @brief 단일 메시지 전송 함수
 //=================================================================================================
-void SessionManager::SendSingleMessage(const string& msg, string ipKey)
+void SessionManager::SendSingleMessage(const string& msg,const string & ipKey)
 {
     Session * session = GetSectionWithKey(ipKey);
     SendSingleMessageWithSession(msg, session);
     session->Reset();
 }
 
+unordered_map<string, Session*>& SessionManager::GetSessionMap()
+{
+    return SessionMap;
+}
+
 //=================================================================================================
 // @brief Key를 이용해 세션을 받아오는 함수
 //=================================================================================================
-Session* SessionManager::GetSectionWithKey(string ipKey)
+Session* SessionManager::GetSectionWithKey(const string & ipKey)
 {
     auto result = SessionMap.find(ipKey);
 
@@ -53,7 +72,7 @@ Session* SessionManager::GetSectionWithKey(string ipKey)
 //=================================================================================================
 // @brief Key를 이용해 세션이 있는지 확인하는 함수
 //=================================================================================================
-bool SessionManager::CheckSessionExist(string ipKey)
+bool SessionManager::CheckSessionExist(const string & ipKey)
 {
     return SessionMap.find(ipKey) != SessionMap.end();
 }

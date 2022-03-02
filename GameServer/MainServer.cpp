@@ -4,7 +4,7 @@
 #include "ServerPacketHandler.h"
 #include "Session.h"
 #include "SessionManager.h"
-
+#include "ServerPacketHandler.h"
 #include "StringTable.h"
 const int BUFSIZE = 4096;
 
@@ -13,15 +13,13 @@ void ProcessInput(Session  session);
 
 MainServer::MainServer()
 {
-	
-	
-
-
+	PacketHandler = new ServerPacketHandler();
 }
 
 MainServer::~MainServer()
 {
-
+	delete PacketHandler;
+	::WSACleanup();
 }
 
 
@@ -46,7 +44,6 @@ bool MainServer::Start(int port)
 
 	u_long on = 1;
 
-
 	//set unblocking
 	::ioctlsocket(listenSocket, FIONBIO, &on);
 
@@ -67,12 +64,72 @@ bool MainServer::Start(int port)
 	return true;
 }
 //=================================================================================================
+// @brief 서버 리스너 루프
+//=================================================================================================
+void MainServer::HandleListener(fd_set &  readSet) const
+{
+	if (FD_ISSET(ListenerSocket, &readSet))
+	{
+
+		SOCKADDR_IN clientAddr;
+		int addrLen = sizeof(clientAddr);
+		SOCKET clientSocket = ::accept(ListenerSocket, (SOCKADDR*)&clientAddr, &addrLen);
+
+		char buf[32];
+		auto ip = inet_ntop(AF_INET, &clientAddr, buf, sizeof(buf));
+
+		if (clientSocket != INVALID_SOCKET)
+		{
+			cout << "Client Connected" << endl;
+
+			string key = string(ip);
+
+			//세션 등록, 로그인시 유저 등록
+			GSessionManager.RegisterSession(clientSocket, key);
+			GSessionManager.SendSingleMessage(StringTable::LoginDescription, key);
+
+		}
+	}
+}
+//=================================================================================================
+// @brief 서버 recv 루프
+//=================================================================================================
+void MainServer::HandleRecv(fd_set& readSet) 
+{
+	unordered_map<string, Session*> sessionMap = GSessionManager.GetSessionMap();
+	for (unordered_map<string, Session*>::iterator it = sessionMap.begin();
+		it != sessionMap.end();)
+	{
+		Session* s = it->second;
+		if (FD_ISSET(s->Socket, &readSet))
+		{
+			int recvLen = ::recv(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
+
+			//연결 끊김
+			if (recvLen <= 0)
+			{
+				// session 및 client 객체 제거
+				GSessionManager.RemoveSessionMap(s->Key);
+				break;
+			}
+
+			s->RecvBytes += recvLen;
+
+			if (s->RecvBuffer[s->RecvBytes - 1] == '\n')
+			{
+				PacketHandler->ProcessInput(*s);
+			}
+
+		}
+		++it;
+	}
+}
+
+//=================================================================================================
 // @brief 서버 메인 루프
 //=================================================================================================
 void MainServer::Update()
 {
-
-	ServerPacketHandler packetHandler;
 	while (true)
 	{
 		fd_set reads;
@@ -83,80 +140,22 @@ void MainServer::Update()
 
 		FD_SET(ListenerSocket, &reads);
 
-		for (std::pair<string, Session*> element : GSessionManager.SessionMap)
+		unordered_map<string, Session*> sessionMap = GSessionManager.GetSessionMap();
+		for (std::pair<string, Session*> element : sessionMap)
 		{
 			Session* s = element.second;
-	
 			FD_SET(s->Socket, &reads);
 		}
 
 		Utility::HandleError((int)(::select(0, &reads, &writes, nullptr, nullptr) == SOCKET_ERROR),
 			"Select Socket Failed !");
-	
-		// Listener 
-		if (FD_ISSET(ListenerSocket, &reads))
-		{
 
-			SOCKADDR_IN clientAddr;
-			int addrLen = sizeof(clientAddr);
-			SOCKET clientSocket = ::accept(ListenerSocket, (SOCKADDR*)&clientAddr, &addrLen);
-
-			char buf[32];
-			auto ip = inet_ntop(AF_INET, &clientAddr, buf, sizeof(buf));
-		
-			if (clientSocket != INVALID_SOCKET)
-			{
-				cout << "Client Connected" << endl;
-
-				string key = string(ip);
-
-				//세션 등록, 로그인시 유저 등록
-				GSessionManager.RegisterSession( clientSocket, key );
-				GSessionManager.SendSingleMessage(StringTable::LoginDescription, key);
-
-			}
-		}
-
-
-		for(unordered_map<string, Session*>::iterator it = GSessionManager.SessionMap.begin(); 
-			it != GSessionManager.SessionMap.end();)
-		{
-			Session* s = it->second;
-			if (FD_ISSET(s->Socket, &reads))
-			{
-				int recvLen = ::recv(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
-
-				if (recvLen <= 0)
-				{
-					// session 및 client 객체 제거
-					if (GClientManager.CheckClientExistWithIpKey(s->Key)) GClientManager.RemoveClient(s->Key);
-					GSessionManager.RemoveSessionMap(s->Key);
-					break;
-				}
-
-				s->RecvBytes += recvLen;
-
-				if (s->RecvBuffer[s->RecvBytes - 1] == '\n')
-				{
-					packetHandler.ProcessInput(*s);
-					
-					/*	FD_SET(s->Socket, &writes);*/
-				}
-
-			}
-
-			// Write
-			else if (FD_ISSET(s->Socket, &writes))
-			{
-
-
-			}
-			++it;
-		}
-
+		HandleListener(reads);
+		HandleRecv(reads);
 
 	}
 }
+
 
 
 

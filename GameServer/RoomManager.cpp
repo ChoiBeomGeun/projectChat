@@ -5,6 +5,15 @@
 #include "StringTable.h"
 #include "Room.h"
 #include <format>
+
+RoomManager::~RoomManager()
+{
+    for(Room * room : RoomList)
+    {
+        delete(room);
+    }
+}
+
 //=================================================================================================
 // @brief 새로운 방 등록 (바로 입장)
 //=================================================================================================
@@ -173,7 +182,7 @@ void RoomManager::ShowRoomUserList(const Session * session,int roomNumber)
 //=================================================================================================
 // @brief 방안에 클라이언트들에게 메시지 전송하는 함수
 //=================================================================================================
-void RoomManager::BroadCastToRoom(Room* room, string& msg)
+void RoomManager::BroadCastToRoom(Room* room,const string& msg)
 {
     for(Client * client : room->GetClients())
     {
@@ -183,7 +192,7 @@ void RoomManager::BroadCastToRoom(Room* room, string& msg)
 //=================================================================================================
 // @brief 방안에 클라이언트들에게 메시지 전송하는 함수
 //=================================================================================================
-void RoomManager::BroadCastToRoomWithNumber(int roomNumber, string& msg)
+void RoomManager::BroadCastToRoomWithNumber(const int roomNumber,const string& msg)
 {
     Room* room = GetRoomWithNumber(roomNumber);
     BroadCastToRoom(room, msg);

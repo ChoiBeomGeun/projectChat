@@ -4,20 +4,21 @@ class Session;
 class Client;
 class ClientManager
 {
-	friend class MainServer;
 public:
-	void RegisterClient(Session* session, string nameKey);
-	void RemoveClient(string ipKey);
-	void BroadcastMessage(string& msg);
-	void SendSingleMessage(string& msg , string ipKey);
+	~ClientManager();
+	void RegisterClient(Session* session, const string & nameKey);
+	void RemoveClient(const string & ipKey);
+	void SendSingleMessage(const string& msg ,const string & nameKey);
 	void ShowClientList(const Session * session);
 
-	Client* GetClientWithNameKey(string nameKey);
-	Client* GetClientWithIpKey(string ipKey);
+	Client* GetClientWithNameKey(const string & nameKey);
+	Client* GetClientWithIpKey(const string & ipKey);
 
-	bool CheckClientExist(string nameKey);
-	bool CheckClientExistWithIpKey(string ipKey);
+	bool CheckClientExist(const string & nameKey);
+	bool CheckClientExistWithIpKey(const string & ipKey);
+	pair<bool,Client*> TryGetClientWithIpKey(const string& ipKey);
 
+private:
 	//session hashmap for searching
 	unordered_map<string, Client*> ClientMap;
 	unordered_map<string, Client*> ClientIpMap;

@@ -10,11 +10,11 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{0929aa3f-42f1-4628-a8d6-bd6d579ecd52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Packet">
-      <UniqueIdentifier>{eb517d8f-fd2c-4132-a880-ea38d80d6981}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{fb6891a3-559c-489a-8462-df5123be67fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Handler">
+      <UniqueIdentifier>{eb517d8f-fd2c-4132-a880-ea38d80d6981}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -22,7 +22,7 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="ServerPacketHandler.cpp">
-      <Filter>Packet</Filter>
+      <Filter>Handler</Filter>
     </ClCompile>
     <ClCompile Include="ClientManager.cpp">
       <Filter>Manager</Filter>
@@ -51,7 +51,7 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ServerPacketHandler.h">
-      <Filter>Packet</Filter>
+      <Filter>Handler</Filter>
     </ClInclude>
     <ClInclude Include="ClientManager.h">
       <Filter>Manager</Filter>

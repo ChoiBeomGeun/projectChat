@@ -40,7 +40,7 @@ private:
 	bool ValidateEnterRoomArgs(vector<string>& args);
 	bool ValidateDestroyRoomArgs(vector<string>& args);
 	bool ValidateWhisperArgs(vector<string>& args);
-
+	bool ValidateRoomUserListArgs(vector<string>& args);
 private:
 	//unordered_map{command name , tuple {need args count, function object}}
 	unordered_map<string, tuple<int, HandleFunc>> CommandList;

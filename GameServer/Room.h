@@ -5,7 +5,12 @@ class Room
 {
 public:
 	Room(Client owner,string roomName, int maxRoomCount);
-	vector<Client> & GetClients();
+	~Room();
+
+	void AddClient(Client* client);
+	void RemoveClient(Client* client);
+
+	vector<Client>  GetClients();
 	int GetMaxRoomCount();
 	int GetCurUserCount();
 	string GetRoomName();
@@ -16,6 +21,6 @@ private:
 	string RoomName;
 	int MaxRoomCount;
 
-	vector<Client> RoomClients;
+	vector<Client>*  RoomClients;
 };
 

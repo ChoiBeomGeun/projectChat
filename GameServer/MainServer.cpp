@@ -126,7 +126,9 @@ void MainServer::Update()
 
 				if (recvLen <= 0)
 				{
-					// TODO : sessions 제거
+					// session 및 client 객체 제거
+					GSessionManager.RemoveSessionMap(s->Key);
+					if(GClientManager.CheckClientExistWithIpKey(s->Key)) GClientManager.RemoveClient(s->Key);
 					continue;
 				}
 

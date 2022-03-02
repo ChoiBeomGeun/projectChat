@@ -29,8 +29,8 @@ ServerPacketHandler::ServerPacketHandler()
 	CommandList["/roomlist"] = make_tuple(0, HandleFunc(&ServerPacketHandler::HandleRoomList));
 	CommandList["/rl"] = make_tuple(0, HandleFunc(&ServerPacketHandler::HandleRoomList));
 
-	CommandList["/roomuserlist"] = make_tuple(0, HandleFunc(&ServerPacketHandler::HandleRoomUserList));
-	CommandList["/rul"] = make_tuple(0, HandleFunc(&ServerPacketHandler::HandleRoomUserList));
+	CommandList["/roomuserlist"] = make_tuple(1, HandleFunc(&ServerPacketHandler::HandleRoomUserList));
+	CommandList["/rul"] = make_tuple(1, HandleFunc(&ServerPacketHandler::HandleRoomUserList));
 
 	CommandList["/userlist"] = make_tuple(0, HandleFunc(&ServerPacketHandler::HandleUserList));
 	CommandList["/ul"] = make_tuple(0, HandleFunc(&ServerPacketHandler::HandleUserList));
@@ -55,8 +55,15 @@ void ServerPacketHandler::ProcessInput(Session & session)
 		int enteredRoomNumber = client->GetEntertedRoomNumber();
 		if(enteredRoomNumber != -1)
 		{
-			string msg = format("[{}] : {}\r\n", client->GetName(), input);
-			GRoomManager.BroadCastToRoomWithNumber(enteredRoomNumber, msg);
+			if(input.compare("/exit") == 0)
+			{
+				GRoomManager.ExitRoom(client);
+			}
+			else
+			{
+				string msg = format("[{}] : {}\r\n", client->GetName(), input);
+				GRoomManager.BroadCastToRoomWithNumber(enteredRoomNumber, msg);
+			}
 
 			return;
 		}
@@ -120,12 +127,14 @@ void ServerPacketHandler::HandleLogin(vector<string> args, Session* session)
 		return;
 	}
 
-	string notifyMessage = format(StringTable::AlarmEnterServer, args[1]);
-	GSessionManager.BroadcastMessage(notifyMessage);
 	GClientManager.RegisterClient(session, args[1]);
 
+	//클라이언트에게 커맨드관련 안내 전송
 	GSessionManager.SendSingleMessage(StringTable::CommandDescription, session->Key);
 
+	//모든 클라이언트들에게 로그인 사실을 알림
+	string notifyMessage = format(StringTable::AlarmEnterServer, args[1]);
+	GSessionManager.BroadcastMessage(notifyMessage);
 	session->Reset();
 }
 
@@ -226,6 +235,14 @@ void ServerPacketHandler::HandleRoomList(vector<string> args, Session* session)
 //=================================================================================================
 void ServerPacketHandler::HandleRoomUserList(vector<string> args, Session* session)
 {
+	if (ValidateRoomUserListArgs(args) == false)
+	{
+		GSessionManager.SendSingleMessage(StringTable::InvalidDestroyRoom, session->Key);
+		return;
+	}
+	int	roomNumber = -1;
+	Utility::TryParseIntFromString(OUT roomNumber, args[1]);
+	GRoomManager.ShowRoomUserList(session, roomNumber);
 }
 //=================================================================================================
 // @brief 귓속말 핸들러 함수
@@ -238,8 +255,16 @@ void ServerPacketHandler::HandleWhisper(vector<string> args, Session* session)
 	if (ValidateWhisperArgs(args) == false)
 	{
 		GSessionManager.SendSingleMessage(StringTable::InvalidWhisper,session->Key);
+		return;
 	}
 
+	// 나의 클라이언트 정보
+	Client* client = GClientManager.GetClientWithIpKey(session->Key);
+	// 귓속말 상대 정보
+	Client* opClient = GClientManager.GetClientWithNameKey(args[1]);
+	string msg = format(StringTable::TemplateWhispher, client->GetName()) + args[2];
+	GSessionManager.SendSingleMessage(msg, opClient->GetSession()->Key);
+	GSessionManager.SendSingleMessage(StringTable::AlarmSendWhispher, session->Key);
 }
 //=================================================================================================
 // @brief 명령어 헬프 함수
@@ -288,7 +313,6 @@ bool ServerPacketHandler::ValidateEnterRoomArgs(vector<string>& args)
 //=================================================================================================
 // @brief Validate DestroyRoom Args
 // args0 = commandName	(string)
-// args1 = roomName (string)
 //=================================================================================================
 bool ServerPacketHandler::ValidateDestroyRoomArgs(vector<string>& args)
 {
@@ -306,6 +330,18 @@ bool ServerPacketHandler::ValidateDestroyRoomArgs(vector<string>& args)
 bool ServerPacketHandler::ValidateWhisperArgs(vector<string>& args)
 {
 	if (GClientManager.CheckClientExist(args[1]) == false) return false;
+	return true;
+}
+//=================================================================================================
+// @brief Validate RoomUserListArgs
+// args0 = commandName	(string)
+// args1 = roomNumber   (int)
+//=================================================================================================
+bool ServerPacketHandler::ValidateRoomUserListArgs(vector<string>& args)
+{
+	int roomNumber = -1;
+	Utility::TryParseIntFromString(OUT roomNumber, args[1]);
+	if (GRoomManager.CheckRoomExistByNumber(roomNumber) == false) return false;
 	return true;
 }
 

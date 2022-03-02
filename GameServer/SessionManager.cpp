@@ -22,6 +22,8 @@ void SessionManager::RemoveSessionMap(string ipKey)
     Utility::HandleError((CheckSessionExist(ipKey) == true),
         "Not Exist Name! : " + ipKey);
 
+    delete(GetSectionWithKey(ipKey));
+
     SessionMap.erase(ipKey);
 
 }
@@ -72,5 +74,6 @@ void SessionManager::BroadcastMessage(const string& msg)
 void SessionManager::SendSingleMessageWithSession(const string & msg, Session* session)
 {
     send(session->Socket, msg.c_str(),static_cast<int>(msg.size()),0);
+    std::cout << msg << endl;
 }
 

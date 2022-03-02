@@ -13,6 +13,7 @@ public:
 	Room* GetRoomWithNumber(int roomNumber);
 	bool CheckRoomExistByNumber(int roomNumber);
 	void ShowRoomList(Session* session);
+	void ShowRoomUserList(Session* session,int roomNumber);
 	void BroadCastToRoom(Room* room, string& msg);
 	void BroadCastToRoomWithNumber(int roomNumber, string& msg);
 private:

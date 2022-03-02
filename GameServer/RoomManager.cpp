@@ -28,9 +28,18 @@ void RoomManager::EnterRoom(Client * client, int roomNumber)
         GSessionManager.SendSingleMessage(StringTable::AlarmNoRoom, client->GetSession()->Key);
         return;
     }
-    client->SetRoomState(roomNumber);
+ 
     Room * room = GetRoomWithNumber(roomNumber);
-    room->GetClients().push_back(*client);
+
+    //최대 입장 유저 수 확인
+    if(room->GetCurUserCount() +1 > room->GetMaxRoomCount())
+    {
+        GSessionManager.SendSingleMessage(StringTable::AlarmFullRoom, client->GetSession()->Key);
+        return;
+    }
+
+    client->SetRoomState(roomNumber);
+    room->AddClient(client);
     string notifyMessage = format(StringTable::AlarmEnterRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount());
     BroadCastToRoom(room, notifyMessage);
 }
@@ -45,15 +54,21 @@ void RoomManager::ExitRoom(Client* client)
         return;
     }
 
-    Room* room = GetRoomWithNumber(client->GetEntertedRoomNumber());
-    vector<Client> clientList = room->GetClients();
+    int roomNumber = client->GetEntertedRoomNumber();
 
+    Room* room = GetRoomWithNumber(roomNumber);
+    room->RemoveClient(client);
     //Notify clients after erasing container
-    clientList.erase(std::remove_if(clientList.begin(), clientList.end(), [=](Client pClient) {return pClient.GetName() == client->GetName(); }), clientList.end());
+   
     client->SetRoomState(-1);
 
     string notifyMessage = format(StringTable::AlarmExitRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount());
     BroadCastToRoom(room, notifyMessage);
+
+    if(room->GetCurUserCount() == 0)
+    {
+        DestroyRoom(roomNumber,client->GetSession());
+    }
     
 }
 
@@ -71,8 +86,6 @@ void RoomManager::DestroyRoom(int roomNumber,Session * session)
     Room* room = GetRoomWithNumber(roomNumber);
     vector<Client> clientList = room->GetClients();
 
-
-
     //Notify clients before deleting room
     string notifyMessage = format(StringTable::AlarmDestroyRoom, room->GetRoomName());
     BroadCastToRoom(room, notifyMessage);
@@ -82,7 +95,7 @@ void RoomManager::DestroyRoom(int roomNumber,Session * session)
         client.SetRoomState(-1);
     }
 
-  // RoomList.erase(std::remove_if(RoomList.begin(), RoomList.end(), room), RoomList.end());
+    RoomList.erase(RoomList.begin()+ roomNumber);
     delete(room);
 }
 //=================================================================================================
@@ -134,6 +147,28 @@ void RoomManager::ShowRoomList(Session * session)
     GSessionManager.SendSingleMessage(result, session->Key);
 
 }
+//=================================================================================================
+// @brief 해당 방에 어떤 유저가 접속했는지 체크하는 함수
+//=================================================================================================
+void RoomManager::ShowRoomUserList(Session * session,int roomNumber)
+{
+    Room* room = GetRoomWithNumber(roomNumber);
+    vector<Client> clients = room->GetClients();
+    std::stringstream ss;
+    ss << StringTable::AlarmRoomUserList;
+    string userCount = std::format("({}/{})", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount()));
+    string roomDes = std::format(StringTable::TemplateRoomList, roomNumber, room->GetRoomName(), room->GetOwner().GetName(), userCount);
+    ss << room;
+    for(Client client : clients)
+    {
+        string userInfo = std::format(StringTable::TemplateClientInfo, client.GetName(), client.GetSession()->Key);
+        ss << userInfo;
+    }
+
+    string result = ss.str();
+    GSessionManager.SendSingleMessage(result, session->Key);
+}
+
 //=================================================================================================
 // @brief 방안에 클라이언트들에게 메시지 전송하는 함수
 //=================================================================================================

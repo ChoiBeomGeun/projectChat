@@ -5,8 +5,6 @@
 class Client
 {
 public:
-	;
-
 	Client(string name,Session* session);
 
 public:

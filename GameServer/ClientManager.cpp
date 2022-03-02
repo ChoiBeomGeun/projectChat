@@ -13,13 +13,15 @@ void ClientManager::RegisterClient(Session* session, string nameKey)
     Client* client = new Client(nameKey, session);
     ClientMap[nameKey] = client;
     ClientIpMap[session->Key] = client;
-
-    string notifyMessage = format(StringTable::AlarmEnterServer, nameKey);
-    GSessionManager.BroadcastMessage(notifyMessage);
 }
 
 void ClientManager::RemoveClient(string ipKey)
 {
+    Client* client = GetClientWithIpKey(ipKey);
+    delete(client);
+    ClientIpMap.erase(ipKey);
+    ClientMap.erase(client->GetName());
+
 }
 
 void ClientManager::BroadcastMessage(string& msg)
@@ -46,10 +48,9 @@ void ClientManager::ShowClientList(Session * session)
 
     std::stringstream ss;
 
-
     for (std::pair<string, Client*> element : ClientIpMap)
     {
-        string userInfo = std::format("유저 닉네임 : {} 유저 주소 : {} \r\n",element.second->GetName() ,element.second->GetSession()->Key);
+        string userInfo = std::format(StringTable::TemplateClientInfo,element.second->GetName() ,element.second->GetSession()->Key);
         ss << userInfo;
     }
     string result = ss.str();

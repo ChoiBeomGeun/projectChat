@@ -17,10 +17,10 @@ namespace StringTable
 로그인				/Login, /l				{닉네임}		    \r\n	\
 방 생성				/CreateRoom, /cr		{방이름} {최대인원} \r\n	\
 방 입장				/EnterRoom, /er			{방이름}			\r\n	\
-방 파괴				/DestroyRoom, /dr		{None}              \r\n	\
+방 나가기			/exit					{None}              \r\n	\
 귓속말				/Whisper, /w 			{닉네임} {메시지}   \r\n	\
 방 목록				/RoomList, /rl 		{None}              \r\n	\
-방 참여자 목록			/RoomUserList, /rul		{None}              \r\n	\
+방 참여자 목록			/RoomUserList, /rul		{방번호}              \r\n	\
 접속자 목록			/UserList, /ul 		{None}              \r\n    \
 명령어 목록				/help, /?				{None}	            \r\n";  \
 	 const string AlarmCreatingRoom = "방이 생성되었습니다!\r\n";

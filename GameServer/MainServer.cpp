@@ -109,7 +109,8 @@ void MainServer::Update()
 				cout << "Client Connected" << endl;
 
 				string key = string(ip);
-			
+
+				//세션 등록, 로그인시 유저 등록
 				GSessionManager.RegisterSession( clientSocket, key );
 				GSessionManager.SendSingleMessage(StringTable::LoginDescription, key);
 
@@ -128,7 +129,6 @@ void MainServer::Update()
 				if (recvLen <= 0)
 				{
 					// session 및 client 객체 제거
-
 					if (GClientManager.CheckClientExistWithIpKey(s->Key)) GClientManager.RemoveClient(s->Key);
 					GSessionManager.RemoveSessionMap(s->Key);
 					break;
@@ -139,7 +139,7 @@ void MainServer::Update()
 				if (s->RecvBuffer[s->RecvBytes - 1] == '\n')
 				{
 					packetHandler.ProcessInput(*s);
-
+					
 					/*	FD_SET(s->Socket, &writes);*/
 				}
 

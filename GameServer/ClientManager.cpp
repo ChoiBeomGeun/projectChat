@@ -3,6 +3,7 @@
 #include "SessionManager.h"
 #include "StringTable.h"
 #include "Client.h"
+#include "RoomManager.h"
 #include "Session.h"
 //=================================================================================================
 // @brief 클라이언트 등록
@@ -20,6 +21,11 @@ void ClientManager::RegisterClient(Session* session, string nameKey)
 void ClientManager::RemoveClient(string ipKey)
 {
     Client* client = GetClientWithIpKey(ipKey);
+    if(client->GetEntertedRoomNumber() != -1)
+    {
+        GRoomManager.ExitRoom(client);
+    }
+
     ClientIpMap.erase(ipKey);
     ClientMap.erase(client->GetName());
     delete(client);
@@ -39,7 +45,7 @@ void ClientManager::SendSingleMessage(string & msg, string nameKey)
     GSessionManager.SendSingleMessageWithSession(msg, client->GetSession());
 }
 
-void ClientManager::ShowClientList(Session * session)
+void ClientManager::ShowClientList(const Session * session)
 {
     if (ClientIpMap.size() <= 0)
     {

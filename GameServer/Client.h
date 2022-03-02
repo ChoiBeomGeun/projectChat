@@ -5,7 +5,7 @@ class Session;
 class Client
 {
 public:
-	Client(string name,Session* session);
+	Client(string name, Session* session);
 
 public:
 	void SetRoomState(int roomNumber);

@@ -4,7 +4,6 @@
 #include  "Session.h"
 #include "StringTable.h"
 #include "Room.h"
-
 #include <format>
 //=================================================================================================
 // @brief 새로운 방 등록 (바로 입장)
@@ -58,13 +57,15 @@ void RoomManager::ExitRoom(Client* client)
     int roomNumber = client->GetEntertedRoomNumber();
 
     Room* room = GetRoomWithNumber(roomNumber);
+
+    //Notify clients before erasing container
+    string notifyMessage = format(StringTable::AlarmExitRoom, client->GetName(), room->GetCurUserCount() -1, room->GetMaxRoomCount());
+    BroadCastToRoom(room, notifyMessage);
+
     room->RemoveClient(client);
-    //Notify clients after erasing container
    
     client->SetRoomState(-1);
 
-    string notifyMessage = format(StringTable::AlarmExitRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount());
-    BroadCastToRoom(room, notifyMessage);
 
     if(room->GetCurUserCount() == 0)
     {
@@ -76,7 +77,7 @@ void RoomManager::ExitRoom(Client* client)
 //=================================================================================================
 // @brief 방 삭제
 //=================================================================================================
-void RoomManager::DestroyRoom(int roomNumber,Session * session)
+void RoomManager::DestroyRoom(int roomNumber,const Session * session)
 {
     if (CheckRoomExistByNumber(roomNumber) == false)
     {
@@ -86,10 +87,9 @@ void RoomManager::DestroyRoom(int roomNumber,Session * session)
 
     Room* room = GetRoomWithNumber(roomNumber);
     vector<Client*> clientList = room->GetClients();
-
-    //Notify clients before deleting room
     string notifyMessage = format(StringTable::AlarmDestroyRoom, room->GetRoomName());
-    BroadCastToRoom(room, notifyMessage);
+    //Notify client before deleting room
+    GSessionManager.SendSingleMessage(notifyMessage,session->Key);
 
     for (Client * client : clientList)
     {
@@ -127,7 +127,7 @@ bool RoomManager::CheckRoomExistByNumber(int roomNumber)
 //=================================================================================================
 // @brief 방 리스트들을 출력하는 함수
 //=================================================================================================
-void RoomManager::ShowRoomList(Session * session)
+void RoomManager::ShowRoomList(const Session * session)
 {
     if (RoomList.size() <= 0)
     {
@@ -151,7 +151,7 @@ void RoomManager::ShowRoomList(Session * session)
 //=================================================================================================
 // @brief 해당 방에 어떤 유저가 접속했는지 체크하는 함수
 //=================================================================================================
-void RoomManager::ShowRoomUserList(Session * session,int roomNumber)
+void RoomManager::ShowRoomUserList(const Session * session,int roomNumber)
 {
     Room* room = GetRoomWithNumber(roomNumber);
     vector<Client*> clients = room->GetClients();

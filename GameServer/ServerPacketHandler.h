@@ -14,35 +14,35 @@ enum
 class ServerPacketHandler
 {
 public:
-	using HandleFunc = std::function<void(ServerPacketHandler&, vector<string>, Session*)>;
+	using HandleFunc = std::function<void(ServerPacketHandler&,const vector<string>&, Session*)>;
 	ServerPacketHandler();
 
 	void ProcessInput(Session & session);
 	// Handle command Functions
 private:
-	void HandleLogin(vector<string> args, Session* session);
+	void HandleLogin(const vector<string> & args, Session* session);
 
-	void HandleCreateRoom(vector<string> args, Session* session);
-	void HandleEnterRoom(vector<string> args, Session* session);
-	void HandleDestroyRoom(vector<string> args, Session* session);
-	void HandleExitRoom(vector<string> args, Session* session);
+	void HandleCreateRoom(const vector<string>& args,const Session* session);
+	void HandleEnterRoom(const vector<string> &args, const Session* session);
+	void HandleDestroyRoom(const vector<string>& args, const Session* session);
+	void HandleExitRoom(const vector<string>& args, const Session* session);
 
-	void HandleUserList(vector<string> args, Session* session);
-	void HandleRoomList(vector<string> args, Session* session);
-	void HandleRoomUserList(vector<string> args, Session* session);
+	void HandleUserList(const vector<string> &args, const Session* session);
+	void HandleRoomList(const vector<string>& args, const Session* session);
+	void HandleRoomUserList(const vector<string>& args, const Session* session);
 
-	void HandleWhisper(vector<string> args, Session* session);
+	void HandleWhisper(const vector<string> &args, const Session* session);
 
-	void HandleCommandHelp(vector<string> args, Session* session);
+	void HandleCommandHelp(const vector<string> &args, const Session* session);
 
-	bool ValidateLoginArgs(vector<string>& args);
-	bool ValidateCreateRoomArgs(vector<string>& args);
-	bool ValidateEnterRoomArgs(vector<string>& args);
-	bool ValidateDestroyRoomArgs(vector<string>& args);
-	bool ValidateWhisperArgs(vector<string>& args);
-	bool ValidateRoomUserListArgs(vector<string>& args);
+	bool ValidateLoginArgs(const vector<string>& args);
+	bool ValidateCreateRoomArgs(const vector<string>& args);
+	bool ValidateEnterRoomArgs(const vector<string>& args);
+	bool ValidateDestroyRoomArgs(const vector<string>& args);
+	bool ValidateWhisperArgs(const vector<string>& args);
+	bool ValidateRoomUserListArgs(const vector<string>& args);
 private:
-	//unordered_map{command name , tuple {need args count, function object}}
-	unordered_map<string, tuple<int, HandleFunc>> CommandList;
+	//unordered_map{command name , tuple {if true, command execute in chat room,need args count, function object}}
+	unordered_map<string, tuple<bool,int, HandleFunc>> CommandList;
 };
 

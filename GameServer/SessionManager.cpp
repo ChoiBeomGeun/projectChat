@@ -31,7 +31,7 @@ void SessionManager::RemoveSessionMap(string ipKey)
 //=================================================================================================
 // @brief 단일 메시지 전송 함수
 //=================================================================================================
-void SessionManager::SendSingleMessage(const string& msg,string ipKey)
+void SessionManager::SendSingleMessage(const string& msg, string ipKey)
 {
     Session * session = GetSectionWithKey(ipKey);
     SendSingleMessageWithSession(msg, session);

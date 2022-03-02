@@ -1,7 +1,9 @@
 #include "Client.h"
+#include "Session.h"
 
-Client::Client(string name, ::Session* session) : Name(name) , Session(session)
+Client::Client(string name, ::Session* session) : Session(session) , Name(name)
 {
+	
 }
 
 void Client::SetRoomState(int roomNumber)

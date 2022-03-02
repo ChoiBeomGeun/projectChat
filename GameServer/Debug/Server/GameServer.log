@@ -1,7 +1,2 @@
-﻿  Client.cpp
-  ClientManager.cpp
-  Room.cpp
-  RoomManager.cpp
-  ServerPacketHandler.cpp
-  코드를 생성하고 있습니다...
+﻿  ServerPacketHandler.cpp
   GameServer.vcxproj -> C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Binary\Debug\ProjectChat_Server.exe

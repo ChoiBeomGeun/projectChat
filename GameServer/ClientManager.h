@@ -10,7 +10,7 @@ public:
 	void RemoveClient(string ipKey);
 	void BroadcastMessage(string& msg);
 	void SendSingleMessage(string& msg , string ipKey);
-	void ShowClientList(Session * session);
+	void ShowClientList(const Session * session);
 
 	Client* GetClientWithNameKey(string nameKey);
 	Client* GetClientWithIpKey(string ipKey);

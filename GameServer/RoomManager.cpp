@@ -168,7 +168,7 @@ void RoomManager::ShowRoomUserList(const Session * session,int roomNumber)
     ss << StringTable::AlarmRoomUserList;
     string userCount = std::format("({}/{})", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount()));
     string roomDes = std::format(StringTable::TemplateRoomList, roomNumber, room->GetRoomName(), room->GetOwner().GetName(), userCount);
-    ss << room;
+    ss << roomDes;
     for(Client * client : clients)
     {
         string userInfo = std::format(StringTable::TemplateClientInfo, client->GetName(), client->GetSession()->Key);

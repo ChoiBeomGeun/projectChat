@@ -124,7 +124,27 @@ void MainServer::HandleRecv(fd_set& readSet)
 		++it;
 	}
 }
+//=================================================================================================
+// @brief 서버 send 루프
+//=================================================================================================
+void MainServer::HandleSend(fd_set& writeSet)
+{
+	unordered_map<string, Session*> sessionMap = GSessionManager.GetSessionMap();
+	for (unordered_map<string, Session*>::iterator it = sessionMap.begin();
+		it != sessionMap.end();)
+	{
+		Session* s = it->second;
+		if (FD_ISSET(s->Socket, &writeSet))
+		{
+			int sendLen = ::send(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
 
+			s->SendBytes += sendLen;
+
+
+		}
+		++it;
+	}
+}
 //=================================================================================================
 // @brief 서버 메인 루프
 //=================================================================================================
@@ -152,6 +172,7 @@ void MainServer::Update()
 
 		HandleListener(reads);
 		HandleRecv(reads);
+		HandleSend(writes);
 
 	}
 }

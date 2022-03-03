@@ -10,7 +10,8 @@ public:
 
 	bool Start(int port);
 	void HandleListener(fd_set& readSet) const;
-	void HandleRecv(fd_set& readSet) ;
+	void HandleRecv(fd_set& readSet);
+	void HandleSend(fd_set& writeSet);
 	void Update();
 
 	SOCKET ListenerSocket;

@@ -6,10 +6,10 @@
 namespace StringTable
 {
 	  const string InvalidInputDescription = "------------------------입력을 확인하세요!\r\n";
-	  const string InvalidLogin = "------------------------입력을 확인하세요!\r\n";
-	  const string InvalidCreateRoom = "------------------------입력을 확인하세요!\r\n";
+	  const string InvalidLogin = "------------------------입력을 확인하세요! Login, /l {닉네임}\r\n";
+	  const string InvalidCreateRoom = "------------------------입력을 확인하세요! /CreateRoom, /cr {방이름} {최대인원}\r\n";
 	  const string InvalidDestroyRoom = "------------------------입력을 확인하세요!\r\n";
-	  const string InvalidWhisper = "------------------------입력을 확인하세요!\r\n";
+	  const string InvalidWhisper = "------------------------입력을 확인하세요! /Whisper, /w {닉네임} {메시지}!\r\n";
 
 	  const string LoginDescription = "------------------------로그인을 하세요!\r\n명령어 /Login,/l {닉네임} \r\n";
 	  const string CommandDescription =
@@ -45,10 +45,11 @@ namespace StringTable
 	 const string AlarmExitSession =  "------------------------세션이 종료되었습니다.\r\n";
 	 const string AlarmSameSession = "------------------------동일한 사람에게 보낼수 없습니다.\r\n";
 	 const string AlarmNoClient = "------------------------상대를 찾을 수 없습니다. \r\n";
+	 const string AlarmExistSession = "------------------------ 이미 로그인한 세션입니다!\r\n";
 	 const string TemplateRoomList = "------------------------방 번호 : {} 방 이름 : {}, 방 주인 : {}, 인원 수 : {}\r\n";
 	 const string TemplateClientInfo = "------------------------유저 닉네임 : {} 유저 주소 : {} \r\n";
 
-	 const string TemplateWhispher = "{}님의 귓속말 : \r\n";
+	 const string TemplateWhispher = "{}님의 귓속말 : ";
 	 const string TemplateInvite = "# {}님이 {}번방에서 초대 요청을 했습니다.\r\n";
 }
 

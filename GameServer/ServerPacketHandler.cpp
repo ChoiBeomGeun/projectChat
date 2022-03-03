@@ -151,6 +151,12 @@ void ServerPacketHandler::HandleLogin(const vector<string>& args, Session* sessi
 		return;
 	}
 
+	if(GClientManager.CheckClientExistWithIpKey(session->Key) == true)
+	{
+		GSessionManager.SendSingleMessage(StringTable::AlarmExistSession, session->Key);
+		return;
+	}
+
 	GClientManager.RegisterClient(session, args[1]);
 
 	//클라이언트에게 커맨드관련 안내 전송

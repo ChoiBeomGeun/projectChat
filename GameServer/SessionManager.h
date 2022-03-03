@@ -16,9 +16,7 @@ public:
 	void BroadcastMessage(const string& msg);
 	void SendSingleMessage(const string& msg,const string & ipKey);
 	unordered_map<string, Session*> & GetSessionMap();
-
 	Session* GetSectionWithKey(const string & ipKey);
-private:
 	bool CheckSessionExist(const string & ipKey);
 	void SendSingleMessageWithSession(const string & msg, Session * session);
 

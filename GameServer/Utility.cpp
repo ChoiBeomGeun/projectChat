@@ -7,14 +7,22 @@
 //=================================================================================================
 // @brief 스트링 분리 헬퍼 함수
 //=================================================================================================
-vector<string> Utility::SplitString(char* target, const char* delimiter)
+vector<string> Utility::SplitString(char* target, const char* delimiter,int maxSplit)
 {
 	char* context = NULL;
 	char* token = strtok_s(target, delimiter, &context);
 	vector<string> splitStrings;
 
+	
 	while (token != NULL)
 	{
+		if(splitStrings.size() + 1 == maxSplit)
+		{
+			string lastString = format("{0} {1}", token, context);
+			splitStrings.push_back(lastString);
+			break;
+		}
+
 		splitStrings.push_back(token);
 		token = strtok_s(NULL, delimiter, &context);
 	}

@@ -90,7 +90,7 @@ void ServerPacketHandler::ProcessInput(Session & session)
 		}
 	}
 	
-	vector<string> args = Utility::SplitString(const_cast<char*>(input.c_str()), " ");
+	vector<string> args = Utility::SplitString(const_cast<char*>(input.c_str()), " ",3);
 
 	//check args is empty
 	if (args.empty() == true)
@@ -353,7 +353,7 @@ void ServerPacketHandler::HandleWhisper(const vector<string>& args, const Sessio
 	}
 	else
 	{
-		string msg = format(StringTable::TemplateWhispher, client->GetName()) + args[2];
+		string msg = format(StringTable::TemplateWhispher, client->GetName()) + args[2]+"\r\n";
 		GSessionManager.SendSingleMessage(msg, opClient->GetSession()->Key);
 		GSessionManager.SendSingleMessage(StringTable::AlarmSendWhispher, session->Key);
 	}

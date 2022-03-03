@@ -12,7 +12,7 @@ Room::~Room()
 
 void Room::AddClient(Client* client)
 {
-	RoomClients.push_back(client);
+	RoomClients.emplace_back(client);
 }
 
 void Room::RemoveClient(Client* client)

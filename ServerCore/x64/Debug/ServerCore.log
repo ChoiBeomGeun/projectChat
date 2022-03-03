@@ -1,2 +1,5 @@
-﻿  Utility.cpp
+﻿  pch.cpp
+  The contents of <format> are available only in c++latest mode with concepts support;
+  see https://github.com/microsoft/STL/issues/1814 for details.
+  CorePch.cpp
   ServerCore.vcxproj -> C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Libraries\Debug\Lib\ServerCore.lib

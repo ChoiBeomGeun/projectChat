@@ -45,6 +45,7 @@
     <ClCompile Include="Room.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -77,6 +78,7 @@
     <ClInclude Include="Room.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

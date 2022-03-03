@@ -20,7 +20,7 @@ RoomManager::~RoomManager()
 void RoomManager::RegisterRoom(Client * owner, string roomName, int maxRoomCount)
 {
 	Room* room = new Room(owner,roomName,maxRoomCount);
-    RoomList.push_back(room);
+    RoomList.emplace_back(room);
 
     GSessionManager.SendSingleMessage(StringTable::AlarmCreatingRoom,owner->GetSession()->Key);
 

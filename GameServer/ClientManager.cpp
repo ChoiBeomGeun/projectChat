@@ -19,8 +19,11 @@ ClientManager::~ClientManager()
 //=================================================================================================
 void ClientManager::RegisterClient(Session* session, const string & nameKey)
 {
-    Utility::HandleError((CheckClientExist(nameKey) == true),
-        "Exist Name! : " + nameKey);
+    if(Utility::HandleError((CheckClientExist(nameKey) == true),
+        "Exist Name! : " + nameKey,false,session))
+    {
+        return;
+    }
 
     Client * client = new Client(nameKey, session);
     ClientMap[nameKey] = client;
@@ -73,7 +76,7 @@ Client* ClientManager::GetClientWithNameKey(const string & nameKey)
     auto result = ClientMap.find(nameKey);
 
     Utility::HandleError(result == ClientMap.end(),
-        "Not Exist Name! : " + nameKey);
+        "Not Exist Name! : " + nameKey,false);
 
     return result->second;
 }
@@ -82,7 +85,7 @@ Client* ClientManager::GetClientWithIpKey(const string & ipKey)
     auto result = ClientIpMap.find(ipKey);
 
     Utility::HandleError(result == ClientIpMap.end(),
-        "Not Exist Name! : " + ipKey);
+        "Not Exist Name! : " + ipKey,false);
 
     return result->second;
 }

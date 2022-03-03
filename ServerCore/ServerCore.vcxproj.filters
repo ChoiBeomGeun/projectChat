@@ -18,9 +18,6 @@
     <ClInclude Include="CorePch.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
-      <Filter>Util</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -28,9 +25,6 @@
     </ClCompile>
     <ClCompile Include="CorePch.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility.cpp">
-      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,11 +15,6 @@ SessionManager::~SessionManager()
 //=================================================================================================
 void SessionManager::RegisterSession(const SOCKET & socket,const string & key)
 {
-    //중복된 ip 체크
-    Utility::HandleError((CheckSessionExist(key) == true),
-        "Exist Name! : " + key);
-
-
     Session* session = new Session{ socket, key };
 
     SessionMap[session->Key] = session;
@@ -65,7 +60,7 @@ Session* SessionManager::GetSectionWithKey(const string & ipKey)
     auto result = SessionMap.find(ipKey);
 
     Utility::HandleError(result == SessionMap.end(),
-        "Not Exist Name! : " + ipKey);
+        "Not Exist Name! : " + ipKey,false);
 
     return result->second;
 }
@@ -91,7 +86,7 @@ void SessionManager::BroadcastMessage(const string& msg)
 //=================================================================================================
 // @brief 세션을 이용한 메시지 전송 함수
 //=================================================================================================
-void SessionManager::SendSingleMessageWithSession(const string & msg, Session* session)
+void SessionManager::SendSingleMessageWithSession(const string & msg,const Session* session)
 {
     send(session->Socket, msg.c_str(),static_cast<int>(msg.size()),0);
     std::cout << msg << endl;

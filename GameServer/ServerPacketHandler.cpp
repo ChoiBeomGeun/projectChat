@@ -340,6 +340,7 @@ void ServerPacketHandler::HandleWhisper(const vector<string>& args, const Sessio
 	if (ValidateWhisperArgs(args) == false)
 	{
 		GSessionManager.SendSingleMessage(StringTable::AlarmNoClient, session->Key);
+		return;
 	}
 
 	// 나의 클라이언트 정보

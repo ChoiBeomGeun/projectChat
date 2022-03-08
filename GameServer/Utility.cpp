@@ -45,7 +45,7 @@ bool Utility::HandleError(bool isError,const std::string & msg, bool isAssert ,c
 
 	if(notifySession != nullptr && isError)
 	{
-		GSessionManager.SendSingleMessageWithSession(msg, notifySession);
+		GSessionManager.SendSingleMessageWithSession(msg, *notifySession);
 	}
 
 	return isError;

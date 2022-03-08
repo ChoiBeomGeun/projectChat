@@ -43,7 +43,7 @@ void SessionManager::RemoveSessionMap(const string & ipKey)
 void SessionManager::SendSingleMessage(const string& msg,const string & ipKey)
 {
     Session * session = GetSectionWithKey(ipKey);
-    SendSingleMessageWithSession(msg, session);
+    SendSingleMessageWithSession(msg, *session);
     session->Reset();
 }
 
@@ -86,9 +86,10 @@ void SessionManager::BroadcastMessage(const string& msg)
 //=================================================================================================
 // @brief 세션을 이용한 메시지 전송 함수
 //=================================================================================================
-void SessionManager::SendSingleMessageWithSession(const string & msg,const Session* session)
+void SessionManager::SendSingleMessageWithSession(const string & msg,const Session & session)
 {
-    send(session->Socket, msg.c_str(),static_cast<int>(msg.size()),0);
+    send(session.Socket, msg.c_str(),static_cast<int>(msg.size()),0);
     std::cout << msg << endl;
 }
+
 

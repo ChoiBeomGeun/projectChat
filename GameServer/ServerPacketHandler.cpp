@@ -55,7 +55,6 @@ void ServerPacketHandler::ProcessInput(Session & session)
 	bool isClientInChatRoom = false;
 	string input(session.RecvBuffer);
 	input.replace(input.find("\r\n"), 2, "");
-
 	//handle shut down input
 	if (input == "/Q" || input == "/q")
 	{
@@ -159,12 +158,16 @@ void ServerPacketHandler::HandleLogin(const vector<string>& args, Session* sessi
 
 	GClientManager.RegisterClient(session, args[1]);
 
-	//클라이언트에게 커맨드관련 안내 전송
+	GSessionManager.SendSingleMessage(StringTable::AlarmLogin, session->Key);
+
 	GSessionManager.SendSingleMessage(StringTable::CommandDescription, session->Key);
 
-	//모든 클라이언트들에게 로그인 사실을 알림
-	string notifyMessage = format(StringTable::AlarmEnterServer, args[1]);
-	GSessionManager.BroadcastMessage(notifyMessage);
+	////클라이언트에게 커맨드관련 안내 전송
+	//GSessionManager.SendSingleMessage(StringTable::CommandDescription, session->Key);
+
+	////모든 클라이언트들에게 로그인 사실을 알림
+	//string notifyMessage = format(StringTable::AlarmEnterServer, args[1]);
+	//GSessionManager.BroadcastMessage(notifyMessage);
 	session->Reset();
 }
 

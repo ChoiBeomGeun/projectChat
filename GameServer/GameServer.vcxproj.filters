@@ -79,6 +79,9 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="PacketSet.h">
+      <Filter>Handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

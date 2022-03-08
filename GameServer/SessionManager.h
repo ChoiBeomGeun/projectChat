@@ -18,9 +18,10 @@ public:
 	unordered_map<string, Session*> & GetSessionMap();
 	Session* GetSectionWithKey(const string & ipKey);
 	bool CheckSessionExist(const string & ipKey);
-	void SendSingleMessageWithSession(const string & msg,const Session * session);
+	void SendSingleMessageWithSession(const string & msg,const Session & session);
 
 	//session hashmap for searching
+
 	unordered_map<string,Session*> SessionMap;
 };
 

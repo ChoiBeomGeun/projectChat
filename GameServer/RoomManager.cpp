@@ -46,13 +46,13 @@ void RoomManager::EnterRoom(Client * client, int roomNumber)
         GSessionManager.SendSingleMessage(StringTable::AlarmFullRoom, client->GetSession()->Key);
         return;
     }
-
+    GSessionManager.SendSingleMessage(std::format(StringTable::AlarmEnterSelfRoom,room->GetRoomName(),std::format("{}/{}", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount()))), client->GetSession()->Key);
     client->SetRoomState(roomNumber);
     room->AddClient(client);
     string notifyMessage = format(StringTable::AlarmEnterRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount());
     BroadCastToRoom(room, notifyMessage);
 }
-//=================================================================================================
+//================================================================================================= 
 // @brief 방 나가기
 //=================================================================================================
 void RoomManager::ExitRoom(Client* client)
@@ -147,6 +147,7 @@ void RoomManager::ShowRoomList(const Session * session)
     std::stringstream ss;
 
     int roomNumber = 0;
+    GSessionManager.SendSingleMessage(StringTable::AlarmRoomList, session->Key);
     for (Room* element : RoomList)
     {
         string userCount =std::format("({}/{})", std::to_string(element->GetCurUserCount()), std::to_string(element->GetMaxRoomCount()));

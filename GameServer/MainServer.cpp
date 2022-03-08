@@ -105,6 +105,7 @@ void MainServer::HandleRecv(fd_set& readSet)
 		{
 			int recvLen = ::recv(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
 
+
 			//¿¬°á ²÷±è
 			if (recvLen <= 0)
 			{
@@ -117,7 +118,7 @@ void MainServer::HandleRecv(fd_set& readSet)
 
 			if (s->RecvBuffer[s->RecvBytes - 1] == '\n')
 			{
-				PacketHandler->ProcessInput(*s);
+					PacketHandler->ProcessInput(*s);
 			}
 
 		}

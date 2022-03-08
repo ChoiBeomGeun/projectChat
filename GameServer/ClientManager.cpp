@@ -25,6 +25,8 @@ void ClientManager::RegisterClient(Session* session, const string & nameKey)
         return;
     }
 
+
+
     Client * client = new Client(nameKey, session);
     ClientMap[nameKey] = client;
     ClientIpMap[session->Key] = client;

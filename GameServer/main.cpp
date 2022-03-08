@@ -3,14 +3,31 @@
 #include "RoomManager.h"
 #include "SessionManager.h"
 #include "StringTable.h"
-
+#include  "PacketSet.h"
 #pragma comment(lib, "ws2_32.lib")
 
 SessionManager GSessionManager;
 ClientManager GClientManager;
 RoomManager GRoomManager;
+
+
+
+struct PKT_S_TEST
+{
+
+
+	int packetSize; // 공용 헤더
+	int packetId; // 공용 헤더
+	int buffsOffset;
+	int buffsCount;
+	const int msgCount;
+	const char* msg;
+};
+
+
 int main(int argc, char* argv[])
 {
+
 	int port = 7777;
 	if (argc != 2) 
 	{

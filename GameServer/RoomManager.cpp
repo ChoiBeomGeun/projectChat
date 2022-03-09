@@ -46,11 +46,18 @@ void RoomManager::EnterRoom(Client * client, int roomNumber)
         GSessionManager.SendSingleMessage(StringTable::AlarmFullRoom, client->GetSession()->Key);
         return;
     }
-    GSessionManager.SendSingleMessage(std::format(StringTable::AlarmEnterSelfRoom,room->GetRoomName(),std::format("{}/{}", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount()))), client->GetSession()->Key);
+   
     client->SetRoomState(roomNumber);
     room->AddClient(client);
-    string notifyMessage = format(StringTable::AlarmEnterRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount());
+
+     GSessionManager.SendSingleMessage(std::format(StringTable::AlarmEnterSelfRoom,room->GetRoomName(),std::format("{}/{}", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount()))), client->GetSession()->Key);
+
+ //   string notifyMessage = format(StringTable::AlarmEnterRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount());
+    string notifyMessage = format(StringTable::AlarmEnterRoom, client->GetName(), room->GetCurUserCount(), room->GetMaxRoomCount(),
+        std::format("{}/{}", std::to_string(room->GetCurUserCount()), std::to_string(room->GetMaxRoomCount())), room->GetRoomName());
     BroadCastToRoom(room, notifyMessage);
+
+
 }
 //================================================================================================= 
 // @brief 방 나가기

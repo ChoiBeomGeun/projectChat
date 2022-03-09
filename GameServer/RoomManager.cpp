@@ -192,20 +192,26 @@ void RoomManager::ShowRoomUserList(const Session * session,int roomNumber)
 //=================================================================================================
 // @brief 방안에 클라이언트들에게 메시지 전송하는 함수
 //=================================================================================================
-void RoomManager::BroadCastToRoom(Room* room,const string& msg)
+void RoomManager::BroadCastToRoom(Room* room,const string& msg, Session* session)
 {
     for(Client * client : room->GetClients())
     {
+        if(session != nullptr)
+        {
+	        if(client->GetSession()->Key == session->Key)
+                continue;
+        }
+
         GSessionManager.SendSingleMessage(msg, client->GetSession()->Key);
     }
 }
 //=================================================================================================
 // @brief 방안에 클라이언트들에게 메시지 전송하는 함수
 //=================================================================================================
-void RoomManager::BroadCastToRoomWithNumber(const int roomNumber,const string& msg)
+void RoomManager::BroadCastToRoomWithNumber(const int roomNumber,const string& msg,Session * session)
 {
     Room* room = GetRoomWithNumber(roomNumber);
-    BroadCastToRoom(room, msg);
+    BroadCastToRoom(room, msg,session);
 
 }
 

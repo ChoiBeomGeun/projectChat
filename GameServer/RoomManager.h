@@ -17,8 +17,8 @@ public:
 	bool CheckRoomExistByNumber(int roomNumber);
 	void ShowRoomList(const Session* session);
 	void ShowRoomUserList(const Session* session,int roomNumber);
-	void BroadCastToRoom(Room* room,const string& msg);
-	void BroadCastToRoomWithNumber(const int roomNumber, const string& msg);
+	void BroadCastToRoom(Room* room,const string& msg, Session* session = nullptr);
+	void BroadCastToRoomWithNumber(const int roomNumber, const string& msg,Session * session = nullptr );
 private:
 	vector<Room*> RoomList;
 };

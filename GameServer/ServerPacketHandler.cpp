@@ -82,7 +82,7 @@ void ServerPacketHandler::ProcessInput(Session & session)
 			isClientInChatRoom = true;
 	
 			string msg = format("[{}] : {}\r\n", client->GetName(), input);
-			GRoomManager.BroadCastToRoomWithNumber(enteredRoomNumber, msg);
+			GRoomManager.BroadCastToRoomWithNumber(enteredRoomNumber, msg,&session);
 			session.Reset();
 			return;
 			

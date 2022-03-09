@@ -1,8 +1,22 @@
-﻿  MainServer.cpp
+﻿  Client.cpp
+  ClientManager.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  main.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  MainServer.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  Room.cpp
+  RoomManager.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  ServerPacketHandler.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  Session.cpp
+  SessionManager.cpp
+  Utility.cpp
      C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Binary\Release\ProjectChat_Server.lib 라이브러리 및 C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Binary\Release\ProjectChat_Server.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
-  6 of 2050 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    8 functions had inline decision re-evaluated but remain unchanged
+  338 of 2089 functions (16.2%) were compiled, the rest were copied from previous compilation.
+    40 functions were new in current compilation
+    104 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   GameServer.vcxproj -> C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Binary\Release\ProjectChat_Server.exe

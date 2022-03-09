@@ -1,4 +1,4 @@
-#include "MainServer.h"
+ï»¿#include "MainServer.h"
 
 #include "ClientManager.h"
 #include "ServerPacketHandler.h"
@@ -25,11 +25,11 @@ MainServer::~MainServer()
 
 
 //=================================================================================================
-// @brief ¼­¹ö ÃÊ±âÈ­
+// @brief ì„œë²„ ì´ˆê¸°í™”
 //=================================================================================================
 bool MainServer::Start(int port)
 {
-	//À©µµ¿ì ¼ÒÄÏ ÃÊ±âÈ­
+	//ìœˆë„ìš° ì†Œì¼“ ì´ˆê¸°í™”
 	WSAData wsaData;
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
@@ -64,7 +64,7 @@ bool MainServer::Start(int port)
 	return true;
 }
 //=================================================================================================
-// @brief ¼­¹ö ¸®½º³Ê ·çÇÁ
+// @brief ì„œë²„ ë¦¬ìŠ¤ë„ˆ ë£¨í”„
 //=================================================================================================
 void MainServer::HandleListener(fd_set &  readSet) const
 {
@@ -84,7 +84,7 @@ void MainServer::HandleListener(fd_set &  readSet) const
 
 			string key = string(ip);
 
-			//¼¼¼Ç µî·Ï, ·Î±×ÀÎ½Ã À¯Àú µî·Ï
+			//ì„¸ì…˜ ë“±ë¡, ë¡œê·¸ì¸ì‹œ ìœ ì € ë“±ë¡
 			GSessionManager.RegisterSession(clientSocket, key);
 			GSessionManager.SendSingleMessage(StringTable::LoginDescription, key);
 
@@ -92,7 +92,7 @@ void MainServer::HandleListener(fd_set &  readSet) const
 	}
 }
 //=================================================================================================
-// @brief ¼­¹ö recv ·çÇÁ
+// @brief ì„œë²„ recv ë£¨í”„
 //=================================================================================================
 void MainServer::HandleRecv(fd_set& readSet) 
 {
@@ -106,17 +106,18 @@ void MainServer::HandleRecv(fd_set& readSet)
 			int recvLen = ::recv(s->Socket, s->RecvBuffer + s->RecvBytes, BUFSIZE - s->RecvBytes, 0);
 
 
-			//¿¬°á ²÷±è
+			//ì—°ê²° ëŠê¹€
 			if (recvLen <= 0)
 			{
-				// session ¹× client °´Ã¼ Á¦°Å
+				// session ë° client ê°ì²´ ì œê±°
 				GSessionManager.RemoveSessionMap(s->Key);
 				break;
 			}
 
 			s->RecvBytes += recvLen;
 
-			if (s->RecvBuffer[s->RecvBytes - 1] == '\n')
+			string stringBuffer(s->RecvBuffer);
+			if (stringBuffer[stringBuffer.size()-1] == '\n')
 			{
 					PacketHandler->ProcessInput(*s);
 			}
@@ -126,7 +127,7 @@ void MainServer::HandleRecv(fd_set& readSet)
 	}
 }
 //=================================================================================================
-// @brief ¼­¹ö send ·çÇÁ
+// @brief ì„œë²„ send ë£¨í”„
 //=================================================================================================
 void MainServer::HandleSend(fd_set& writeSet)
 {
@@ -147,7 +148,7 @@ void MainServer::HandleSend(fd_set& writeSet)
 	}
 }
 //=================================================================================================
-// @brief ¼­¹ö ¸ŞÀÎ ·çÇÁ
+// @brief ì„œë²„ ë©”ì¸ ë£¨í”„
 //=================================================================================================
 void MainServer::Update()
 {

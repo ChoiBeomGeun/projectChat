@@ -68,6 +68,8 @@ void RoomManager::ExitRoom(Client* client)
     Room* room = GetRoomWithNumber(roomNumber);
 
     //Notify clients before erasing container
+    GSessionManager.SendSingleMessage(StringTable::AlarmExitSelfRoom, client->GetSession()->Key);
+    
     string notifyMessage = format(StringTable::AlarmExitRoom, client->GetName(), room->GetCurUserCount() -1, room->GetMaxRoomCount());
     BroadCastToRoom(room, notifyMessage);
 

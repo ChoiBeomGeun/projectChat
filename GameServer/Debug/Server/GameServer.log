@@ -1,3 +1,12 @@
-﻿  MainServer.cpp
+﻿  ClientManager.cpp
 C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  MainServer.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  RoomManager.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  ServerPacketHandler.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  main.cpp
+C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\GameServer\StringTable.h(16,5): warning C4129: 'w': 문자 이스케이프 시퀀스를 인식할 수 없습니다.
+  코드를 생성하고 있습니다...
   GameServer.vcxproj -> C:\Users\o7716\OneDrive\Desktop\newGitchat\projectChat\Binary\Debug\ProjectChat_Server.exe

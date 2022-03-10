@@ -19,8 +19,8 @@ ServerPacketHandler::ServerPacketHandler()
 	CommandList["/createroom"] = make_tuple(false, 2, HandleFunc(&ServerPacketHandler::HandleCreateRoom));
 	CommandList["/cr"] = make_tuple(false, 2, HandleFunc(&ServerPacketHandler::HandleCreateRoom));
 
-	CommandList["/enterroom"] = make_tuple(false, 1, HandleFunc(&ServerPacketHandler::HandleEnterRoom));
-	CommandList["/er"] = make_tuple(false, 1, HandleFunc(&ServerPacketHandler::HandleEnterRoom));
+	CommandList["/enterroom"] = make_tuple(true, 1, HandleFunc(&ServerPacketHandler::HandleEnterRoom));
+	CommandList["/er"] = make_tuple(true, 1, HandleFunc(&ServerPacketHandler::HandleEnterRoom));
 
 	CommandList["/destroyroom"] = make_tuple(false, 1, HandleFunc(&ServerPacketHandler::HandleDestroyRoom));
 	CommandList["/dr"] = make_tuple(false, 1, HandleFunc(&ServerPacketHandler::HandleDestroyRoom));

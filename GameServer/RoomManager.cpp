@@ -46,6 +46,11 @@ void RoomManager::EnterRoom(Client * client, int roomNumber)
         GSessionManager.SendSingleMessage(StringTable::AlarmFullRoom, client->GetSession()->Key);
         return;
     }
+
+    if(client->GetEntertedRoomNumber() != -1)
+    {
+        ExitRoom(client);
+    }
    
     client->SetRoomState(roomNumber);
     room->AddClient(client);
